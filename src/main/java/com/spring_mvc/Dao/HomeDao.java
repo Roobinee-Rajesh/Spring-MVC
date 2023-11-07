@@ -19,29 +19,27 @@ public class HomeDao {
         connection= DBConnection.getConnection();
     }
 
-    public ArrayList<User> getUser(){
-        ArrayList<User> users=new ArrayList<>();
-    User user=null;
-        try{
-        PreparedStatement statement=connection.prepareStatement(GET_USER);
-        ResultSet rs = statement.executeQuery();
-        if (rs.next()) {
-            user=new User();
-            user.setId(rs.getInt("id"));
-            user.setName(rs.getString("name"));
-//            user.setEmail(rs.getString("email"));
-//            user.setPassword(rs.getString("password"));
-//            user.setGender(rs.getString("gender"));
-//            user.setState(rs.getString("state"));
-//            user.setLanguage(rs.getString("language"));
-//            user.setQualification(Collections.singletonList(rs.getString("qualification")));
-        users.add(user);
+    public ArrayList<User> getUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        User user = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement(GET_USER);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
+            user.setGender(rs.getString("gender"));
+            user.setState(rs.getString("state"));
+            user.setLang(rs.getString("language"));
+            user.setQualification(Collections.singletonList(rs.getString("qualification")));
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-    } catch (
-    SQLException e) {
-        e.printStackTrace();
-    }
         return users;
 }
 }

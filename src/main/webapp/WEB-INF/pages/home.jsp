@@ -13,7 +13,7 @@
             defer></script>
 </head>
 <body>
-<p>Welcome</p>
+<h1>Welcome</h1>
 <c:if test="${users.size() eq 0}">
     <p>No Items to display</p>
 </c:if>
@@ -24,6 +24,12 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Gender</th>
+            <th>Language</th>
+            <th>State</th>
+            <th>Qualification</th>
         </tr>
         </thead>
         <tbody>
@@ -34,7 +40,21 @@
                 </td>
                 <td>
                     <c:out value="${user.name}" />
+                </td><td>
+                    <c:out value="${user.email}" />
                 </td>
+                <td>
+                    <c:out value="${user.password}" />
+                </td><td>
+                    <c:out value="${user.gender}" />
+                </td><td>
+                    <c:out value="${user.lang}" />
+                </td><td>
+                    <c:out value="${user.state}" />
+                </td><td>
+                    <c:out value="${user.qualification.get(0)}" />
+                </td>
+
             </tr>
         </c:forEach>
         </tbody>

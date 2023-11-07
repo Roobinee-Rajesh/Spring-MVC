@@ -1,6 +1,6 @@
 package com.spring_mvc.model;
-
 import javax.validation.constraints.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ public class User {
     private String state;
     @NotNull(message = "Please select a qualification")
     private List<String> qualification;
+    private String lang;
 
     public User(){
         qualification = new ArrayList<>();
@@ -108,4 +109,12 @@ public class User {
     public void setState(String state) {
         this.state = state;
     }
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
 }

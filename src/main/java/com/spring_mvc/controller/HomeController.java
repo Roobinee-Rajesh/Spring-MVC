@@ -1,9 +1,12 @@
 package com.spring_mvc.controller;
 
+import com.spring_mvc.Dao.AuthDao;
 import com.spring_mvc.Dao.HomeDao;
+import com.spring_mvc.model.Login;
 import com.spring_mvc.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +14,7 @@ import org.springframework.web.multipart.support.AbstractMultipartHttpServletReq
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 
 @Controller
@@ -26,35 +30,27 @@ public class HomeController {
     public String showPage() {
         return "index";
     }
-//    @RequestMapping("/showForm")
-//    public String showForm(){
-//        return "showForm";
-//    }
-//    @RequestMapping("/processForm")
-//    public String processForm(){
-//        return "processForm";
-//    }
-//@RequestMapping("/processFormTwo")
-//    public  String processFormTwo(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Model model)
-//    {
-//        String name=httpServletRequest.getParameter("sname");
-//        model.addAttribute("message",name);
-//        return "processForm";
-//    }
-//
-//    @RequestMapping("/processFormThree")
-//    public  String processFormThree(@RequestParam("sname") String name, Model model)
-//    {
-//        model.addAttribute("message",name);
-//        return "processForm";
-//    }
 
-    @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String showHome(Model model) {
-        ArrayList<User> users=new ArrayList<>();
-        users = homeDao.getUser();
-        model.addAttribute("users", users);
-        return "home";
+    @RequestMapping(value = "/home")
+    public String showHome(Model model, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+        String email=httpServletRequest.getParameter("email");
+        String password=httpServletRequest.getParameter("password");
+        model.addAttribute("email",email);
+        model.addAttribute("password",password);
+
+        AuthDao authDao=new AuthDao();
+        authDao.validateUser(email,password);
+
+        Login login = authDao.validateUser(email, password);
+        if (login != null) {
+            ArrayList<User> users = homeDao.getUsers();
+            model.addAttribute("users", users);
+            return "home";
+        } else {
+            httpServletRequest.setAttribute("error", true);
+            return "index";
+        }
+
     }
 
 }
